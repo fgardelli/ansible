@@ -24,7 +24,7 @@
       state: latest
   
 - name: Update Debian-based systems
-  hosts: linux
+  hosts: all
   become: true
   gather_facts: false
 
