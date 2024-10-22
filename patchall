@@ -1,0 +1,36 @@
+---
+- name: Update RedHat-based systems
+  hosts: redhat
+  become: true
+  gather_facts: false
+
+  tasks:
+
+  - name: Upgrade all packages
+    ansible.builtin.dnf:
+      name: "*"
+      state: latest
+  
+- name: Update Debian-based systems
+  hosts: ubuntu
+  become: true
+  gather_facts: false
+
+  tasks:
+
+  - name: Upgrade all packages
+    ansible.builtin.dnf:
+      name: "*"
+      state: latest
+  
+- name: Update Debian-based systems
+  hosts: linux
+  become: true
+  gather_facts: false
+
+  tasks:
+
+  - name: Upgrade all packages
+    ansible.builtin.dnf:
+      name: "*"
+      state: latest
