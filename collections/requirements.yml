@@ -1,1 +1,1 @@
-
+ansible-galaxy collection install community.aws:==7.2.0
