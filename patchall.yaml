@@ -10,6 +10,13 @@
     - name: print disk space
       ansible.builtin.shell: df -hT
       register: out
+    - name: Echo Disk space
+      shell:
+        cmd: "echo {{ out.stdout_lines }}"
+    register: result
+    - name: Show result
+      debug:
+       var: result
     - debug: var=out.stdout_lines
         # Run the playbook
 #ansible-playbook -i ./development_aws_ec2.yaml ./playbook.yaml
