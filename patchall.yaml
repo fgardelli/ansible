@@ -7,10 +7,10 @@
     ansible_aws_ssm_region: eu-south-1
       #  ansible_connection: 'community.aws.aws_ssm'
   tasks:
-    - name: print disk space
-      ansible.builtin.shell: df -hT
+    - name: command
+      ansible.builtin.shell: hostname
       register: out
-    - name: Echo Disk space
+    - name: Echo command
       shell:
         cmd: "echo {{ out.stdout_lines }}"
       register: result
