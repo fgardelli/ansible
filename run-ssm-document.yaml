@@ -26,5 +26,9 @@
       with_items: "{{ instance_ids }}"
 
     - name: run SSM document AWS-RunPatchBaseline
-      command: aws ssm send-command --document-name "AWS-RunPatchBaseline" --targets "Key=instanceids,Values={{ item }}" --parameters '{"Operation":["Scan"], "RebootOption":["NoReboot"]}' --comment "Running patch baseline" --region eu-south-1
+      command: aws ssm send-command --document-name "AWS-RunPatchBaseline" --targets "Key=instanceids,Values={{ item }}" --parameters '{"Operation":["Install"], "RebootOption":["RebootIfNeeded"]}' --comment "Running patch baseline" --region eu-south-1
       with_items: "{{ instance_ids }}"
+
+    #- name: run SSM document AWS-RunPatchBaseline
+     # command: aws ssm send-command --document-name "AWS-RunPatchBaseline" --targets "Key=instanceids,Values={{ item }}" --parameters '{"Operation":["Scan"], "RebootOption":["NoReboot"]}' --comment "Running patch baseline" --region eu-south-1
+     # with_items: "{{ instance_ids }}"
