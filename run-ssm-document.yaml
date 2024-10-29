@@ -7,16 +7,16 @@
     #ansible_aws_ssm_region: eu-south-1
       #  ansible_connection: 'community.aws.aws_ssm'
   tasks:
-    - name: command
-      ansible.builtin.shell: hostname
-      register: out
-    - name: Echo command
-      shell:
-        cmd: "echo {{ out.stdout_lines }}"
-      register: result
-    - name: Show result
-      debug:
-        var: result
+#    - name: command
+#      ansible.builtin.shell: hostname
+#      register: out
+#    - name: Echo command
+#      shell:
+#        cmd: "echo {{ out.stdout_lines }}"
+#      register: result
+#    - name: Show result
+#      debug:
+#        var: result
     - name: run SSM document AWS-RunPatchBaseline
       command: aws ssm send-command --document-name "AWS-RunPatchBaseline" --targets "Key=tag:awssupport:patchwork,Values=patch" --parameters '{"Operation":["Scan"], "RebootOption":["NoReboot"]}' --comment "Running patch baseline" --region eu-south-1
           # Run the playbook
