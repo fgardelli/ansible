@@ -1,0 +1,34 @@
+---
+- name: Fetch and use EC2 instance IDs
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Gather information about any instance with patch tag and an uptime of at least 10 minutes
+      amazon.aws.ec2_instance_info:
+        region: eu-south-1
+        uptime: 10
+        filters:
+          "tag:awssupport:patchwork": "patch"
+          instance-state-name: ["running"]
+      register: ec2_info
+
+    - name: Set instance IDs for further tasks
+      set_fact:
+        instance_ids: "{{ ec2_info.instances | map(attribute='instance_id') | list }}"
+
+    - name: Display EC2 Instance IDs
+      debug:
+        var: instance_ids
+
+    - name: Perform actions on EC2 instances
+      command: echo "Instance ID is {{ item }}"
+      with_items: "{{ instance_ids }}"
+
+   # - name: run SSM document AWS-RunPatchBaseline
+    #  command: aws ssm send-command --document-name "AWS-RunPatchBaseline" --targets "Key=instanceids,Values={{ item }}" --parameters '{"Operation":["Install"], "RebootOption":["RebootIfNeeded"]}' --comment "Running patch baseline" --region eu-south-1
+     # with_items: "{{ instance_ids }}"
+
+    - name: run SSM document AWS-RunPatchBaseline
+      command: aws ssm send-command --document-name "AWS-RunPatchBaseline" --targets "Key=instanceids,Values={{ item }}" --parameters '{"Operation":["Scan"], "RebootOption":["NoReboot"]}' --comment "Running patch baseline" --region eu-south-1
+      with_items: "{{ instance_ids }}"
